@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import "./AdminDashboard.css";
 import { useAuth } from "../context/AuthContext";
@@ -56,16 +55,15 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const verifRes = await fetch(
-        "http://localhost:5000/api/users/verifications",
+        "http://20.55.80.17/api/users/verifications",
         { headers: getHeaders() }
       );
       const verifJson = await verifRes.json();
       setVerifications(verifJson.verifications || []);
 
-      const userRes = await fetch(
-        "http://localhost:5000/api/users/admin/users",
-        { headers: getHeaders() }
-      );
+      const userRes = await fetch("http://20.55.80.17/api/users/admin/users", {
+        headers: getHeaders(),
+      });
       const userJson = await userRes.json();
       setUsers(userJson.users || []);
     } catch (err) {
@@ -79,7 +77,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const res = await fetch(
-        "http://localhost:5000/api/campaigns/campaign/campaigns",
+        "http://20.55.80.17/api/campaigns/campaign/campaigns",
         { headers: getHeaders() }
       );
       const data = await res.json();
@@ -94,7 +92,7 @@ export default function AdminDashboard() {
   const fetchDonations = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/donors/donation", {
+      const res = await fetch("http://20.55.80.17/api/donors/donation", {
         headers: getHeaders(),
       });
       const data = await res.json();
@@ -109,7 +107,7 @@ export default function AdminDashboard() {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/donors/transaction", {
+      const res = await fetch("http://20.55.80.17/api/donors/transaction", {
         headers: getHeaders(),
       });
       const data = await res.json();
@@ -150,7 +148,7 @@ export default function AdminDashboard() {
   const handleUpdateUserRole = async (email) => {
     try {
       setLoading(true);
-      await fetch("http://localhost:5000/api/users/admin/user/role", {
+      await fetch("http://20.55.80.17/api/users/admin/user/role", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +171,7 @@ export default function AdminDashboard() {
     if (!window.confirm(`Delete user ${email}?`)) return;
     try {
       setLoading(true);
-      await fetch("http://localhost:5000/api/users/admin/user", {
+      await fetch("http://20.55.80.17/api/users/admin/user", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -197,7 +195,7 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       await fetch(
-        `http://localhost:5000/api/users/verifications/status/${email}`,
+        `http://20.55.80.17/api/users/verifications/status/${email}`,
         {
           method: "PUT",
           headers: {
@@ -220,7 +218,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Delete verification?")) return;
     try {
       setLoading(true);
-      await fetch(`http://localhost:5000/api/users/verifications/${email}`, {
+      await fetch(`http://20.55.80.17/api/users/verifications/${email}`, {
         method: "DELETE",
         headers: { ...getHeaders() },
       });
@@ -237,7 +235,7 @@ export default function AdminDashboard() {
   const handleAddUser = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/users/auth/register", {
+      const res = await fetch("http://20.55.80.17/api/users/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -252,7 +250,10 @@ export default function AdminDashboard() {
         setShowAddUserForm(false);
         setNewUser({ name: "", email: "", password: "", roleId: "" });
       } else {
-        setMessage({ text: data.message || "Failed to add user", type: "error" });
+        setMessage({
+          text: data.message || "Failed to add user",
+          type: "error",
+        });
       }
     } catch (err) {
       setMessage({ text: err.message, type: "error" });
@@ -267,7 +268,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       await fetch(
-        `http://localhost:5000/api/campaigns/campaign/campaigns/${campaignId}`,
+        `http://20.55.80.17/api/campaigns/campaign/campaigns/${campaignId}`,
         {
           method: "DELETE",
           headers: getHeaders(),
@@ -292,7 +293,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       await fetch(
-        `http://localhost:5000/api/campaigns/campaign/campaigns/${editingCampaign}`,
+        `http://20.55.80.17/api/campaigns/campaign/campaigns/${editingCampaign}`,
         {
           method: "PUT",
           headers: {
@@ -317,7 +318,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Delete this donation?")) return;
     setLoading(true);
     try {
-      await fetch(`http://localhost:5000/api/donors/donation/${donationId}`, {
+      await fetch(`http://20.55.80.17/api/donors/donation/${donationId}`, {
         method: "DELETE",
         headers: getHeaders(),
       });
@@ -340,14 +341,16 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       await fetch(
-        `http://localhost:5000/api/donors/donation/${editingDonation}/status`,
+        `http://20.55.80.17/api/donors/donation/${editingDonation}/status`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             ...getHeaders(),
           },
-          body: JSON.stringify({ payment_status: editDonationData.payment_status }),
+          body: JSON.stringify({
+            payment_status: editDonationData.payment_status,
+          }),
         }
       );
       fetchDonations();
@@ -368,7 +371,9 @@ export default function AdminDashboard() {
 
   // Filter transactions based on status and date
   const filteredTransactions = transactions.filter((t) => {
-    const statusMatch = transactionFilter === "all" || t.transaction_status === transactionFilter.toUpperCase();
+    const statusMatch =
+      transactionFilter === "all" ||
+      t.transaction_status === transactionFilter.toUpperCase();
 
     let dateMatch = true;
     if (transactionDateFilter) {
@@ -474,7 +479,8 @@ export default function AdminDashboard() {
               {(() => {
                 const filteredUsers = users
                   .filter(
-                    (u) => filterRole === "all" || String(u.role_id) === filterRole
+                    (u) =>
+                      filterRole === "all" || String(u.role_id) === filterRole
                   )
                   .slice()
                   .reverse();
@@ -582,82 +588,91 @@ export default function AdminDashboard() {
                 <div>Documents</div>
                 <div>Actions</div>
               </div>
-              {verifications.slice().reverse().map((v, i) => (
-                <div key={i} className="table-row">
-                  <div>{v.email}</div>
-                  <div>
-                    <span className={`status-badge ${v.status.toLowerCase()}`}>
-                      {v.status}
-                    </span>
+              {verifications
+                .slice()
+                .reverse()
+                .map((v, i) => (
+                  <div key={i} className="table-row">
+                    <div>{v.email}</div>
+                    <div>
+                      <span
+                        className={`status-badge ${v.status.toLowerCase()}`}
+                      >
+                        {v.status}
+                      </span>
+                    </div>
+                    <div>{v.feedback || "—"}</div>
+                    <div className="documents-cell">
+                      {v.ngo_registration_doc && (
+                        <a
+                          href={v.ngo_registration_doc}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="doc-link"
+                        >
+                          Ngo Registration Doc
+                        </a>
+                      )}
+                      {v.pan_card && (
+                        <a
+                          href={v.pan_card}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="doc-link"
+                        >
+                          PAN Card Doc
+                        </a>
+                      )}
+                      {v.bank_proof && (
+                        <a
+                          href={v.bank_proof}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="doc-link"
+                        >
+                          Bank Proof
+                        </a>
+                      )}
+                      {v.id_proof && (
+                        <a
+                          href={v.id_proof}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="doc-link"
+                        >
+                          ID Proof
+                        </a>
+                      )}
+                    </div>
+                    <div className="verification-actions">
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() =>
+                          handleUpdateVerification(v.email, "APPROVED")
+                        }
+                        disabled={loading || v.status === "APPROVED"}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() =>
+                          handleUpdateVerification(v.email, "REJECTED")
+                        }
+                        disabled={loading || v.status === "REJECTED"}
+                      >
+                        Reject
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline"
+                        onClick={() => handleDeleteVerification(v.email)}
+                        disabled={loading}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                  <div>{v.feedback || "—"}</div>
-                  <div className="documents-cell">
-                    {v.ngo_registration_doc && (
-                      <a
-                        href={v.ngo_registration_doc}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="doc-link"
-                      >
-                        Ngo Registration Doc
-                      </a>
-                    )}
-                    {v.pan_card && (
-                      <a
-                        href={v.pan_card}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="doc-link"
-                      >
-                        PAN Card Doc
-                      </a>
-                    )}
-                    {v.bank_proof && (
-                      <a
-                        href={v.bank_proof}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="doc-link"
-                      >
-                        Bank Proof
-                      </a>
-                    )}
-                    {v.id_proof && (
-                      <a
-                        href={v.id_proof}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="doc-link"
-                      >
-                        ID Proof
-                      </a>
-                    )}
-                  </div>
-                  <div className="verification-actions">
-                    <button
-                      className="btn btn-sm btn-success"
-                      onClick={() => handleUpdateVerification(v.email, "APPROVED")}
-                      disabled={loading || v.status === "APPROVED"}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleUpdateVerification(v.email, "REJECTED")}
-                      disabled={loading || v.status === "REJECTED"}
-                    >
-                      Reject
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline"
-                      onClick={() => handleDeleteVerification(v.email)}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </section>
@@ -682,34 +697,39 @@ export default function AdminDashboard() {
                 <div>Raised Amount</div>
                 <div>Actions</div>
               </div>
-              {campaigns.slice().reverse().map((c, i) => (
-                <div key={c.campaign_id} className="table-row">
-                  <div>{c.title}</div>
-                  <div>{c.ngo_email}</div>
-                  <div>
-                    <span className={`status-badge ${c.status.toLowerCase()}`}>
-                      {c.status}
-                    </span>
+              {campaigns
+                .slice()
+                .reverse()
+                .map((c, i) => (
+                  <div key={c.campaign_id} className="table-row">
+                    <div>{c.title}</div>
+                    <div>{c.ngo_email}</div>
+                    <div>
+                      <span
+                        className={`status-badge ${c.status.toLowerCase()}`}
+                      >
+                        {c.status}
+                      </span>
+                    </div>
+                    <div>{c.city}</div>
+                    <div>₹ {Number(c.target_amount).toLocaleString()}</div>
+                    <div>₹ {Number(c.raised_amount).toLocaleString()}</div>
+                    <div className="row gap">
+                      <button
+                        className="btn btn-sm btn-outline"
+                        onClick={() => handleEditCampaign(c.campaign_id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDeleteCampaign(c.campaign_id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                  <div>{c.city}</div>
-                  <div>₹ {Number(c.target_amount).toLocaleString()}</div>
-                  <div>₹ {Number(c.raised_amount).toLocaleString()}</div>
-                  <div className="row gap">
-                    <button
-                      className="btn btn-sm btn-outline"
-                      onClick={() => handleEditCampaign(c.campaign_id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDeleteCampaign(c.campaign_id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
 
@@ -722,7 +742,10 @@ export default function AdminDashboard() {
                   type="text"
                   value={editCampaignData.title}
                   onChange={(e) =>
-                    setEditCampaignData({ ...editCampaignData, title: e.target.value })
+                    setEditCampaignData({
+                      ...editCampaignData,
+                      title: e.target.value,
+                    })
                   }
                   placeholder="Campaign Title"
                 />
@@ -731,7 +754,10 @@ export default function AdminDashboard() {
                   type="text"
                   value={editCampaignData.city}
                   onChange={(e) =>
-                    setEditCampaignData({ ...editCampaignData, city: e.target.value })
+                    setEditCampaignData({
+                      ...editCampaignData,
+                      city: e.target.value,
+                    })
                   }
                   placeholder="City"
                 />
@@ -740,7 +766,10 @@ export default function AdminDashboard() {
                   type="number"
                   value={editCampaignData.target_amount}
                   onChange={(e) =>
-                    setEditCampaignData({ ...editCampaignData, target_amount: e.target.value })
+                    setEditCampaignData({
+                      ...editCampaignData,
+                      target_amount: e.target.value,
+                    })
                   }
                   placeholder="Target Amount"
                 />
@@ -749,7 +778,10 @@ export default function AdminDashboard() {
                   type="text"
                   value={editCampaignData.status}
                   onChange={(e) =>
-                    setEditCampaignData({ ...editCampaignData, status: e.target.value })
+                    setEditCampaignData({
+                      ...editCampaignData,
+                      status: e.target.value,
+                    })
                   }
                   placeholder="Status"
                 />
@@ -757,7 +789,10 @@ export default function AdminDashboard() {
                   className="textarea-input"
                   value={editCampaignData.description}
                   onChange={(e) =>
-                    setEditCampaignData({ ...editCampaignData, description: e.target.value })
+                    setEditCampaignData({
+                      ...editCampaignData,
+                      description: e.target.value,
+                    })
                   }
                   placeholder="Description"
                 ></textarea>
@@ -896,7 +931,9 @@ export default function AdminDashboard() {
             style={{ marginBottom: "1rem", gap: "1rem", flexWrap: "wrap" }}
           >
             {/* Transaction Status Filter */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
               <label htmlFor="transaction-filter">Filter by Status:</label>
               <select
                 id="transaction-filter"
@@ -913,7 +950,9 @@ export default function AdminDashboard() {
             </div>
 
             {/* Transaction Date Filter */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
               <label htmlFor="transaction-date-filter">Filter by Date:</label>
               <input
                 type="date"
@@ -956,7 +995,9 @@ export default function AdminDashboard() {
                   <div>₹ {Number(t.transaction_amount).toFixed(2)}</div>
                   <div>{t.payment_gateway || "N/A"}</div>
                   <div>
-                    <span className={`status-badge ${t.transaction_status.toLowerCase()}`}>
+                    <span
+                      className={`status-badge ${t.transaction_status.toLowerCase()}`}
+                    >
                       {t.transaction_status}
                     </span>
                   </div>
@@ -983,19 +1024,25 @@ export default function AdminDashboard() {
               type="email"
               placeholder="Email"
               value={newUser.email}
-              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+              onChange={(e) =>
+                setNewUser({ ...newUser, email: e.target.value })
+              }
               className="textarea-input"
             />
             <input
               type="password"
               placeholder="Password"
               value={newUser.password}
-              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+              onChange={(e) =>
+                setNewUser({ ...newUser, password: e.target.value })
+              }
               className="textarea-input"
             />
             <select
               value={newUser.roleId}
-              onChange={(e) => setNewUser({ ...newUser, roleId: Number(e.target.value) })}
+              onChange={(e) =>
+                setNewUser({ ...newUser, roleId: Number(e.target.value) })
+              }
               className="select-input"
             >
               <option value="">Select Role</option>
@@ -1004,7 +1051,11 @@ export default function AdminDashboard() {
               <option value={3}>DONOR</option>
             </select>
             <div className="modal-actions">
-              <button className="btn btn-success" onClick={handleAddUser} disabled={loading}>
+              <button
+                className="btn btn-success"
+                onClick={handleAddUser}
+                disabled={loading}
+              >
                 Add User
               </button>
               <button

@@ -57,7 +57,7 @@ export default function CreateCampaign() {
         data.append("campaign_image", form.campaign_image);
 
       const res = await axios.post(
-        "http://localhost:5000/api/campaigns/campaign/campaigns",
+        "http://20.55.80.17/api/campaigns/campaign/campaigns",
         data,
         {
           headers: {

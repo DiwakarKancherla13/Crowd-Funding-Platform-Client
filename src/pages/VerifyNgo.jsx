@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/VerifyNgo.css";
-import "../styles/VerifyNgo.css"
+import "../styles/VerifyNgo.css";
 export default function VerifyNgo() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function VerifyNgo() {
     ngo_registration_doc: null,
     pan_card: null,
     bank_proof: null,
-    id_proof: null
+    id_proof: null,
   });
   const [status, setStatus] = useState("NONE");
   const [feedback, setFeedback] = useState("");
@@ -27,7 +27,7 @@ export default function VerifyNgo() {
     const fetchStatus = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/users/verifications/${user.email}`,
+          `http://20.55.80.17/api/users/verifications/${user.email}`,
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
         if (res.status === 401) {
@@ -62,7 +62,12 @@ export default function VerifyNgo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!files.ngo_registration_doc || !files.pan_card || !files.bank_proof || !files.id_proof) {
+    if (
+      !files.ngo_registration_doc ||
+      !files.pan_card ||
+      !files.bank_proof ||
+      !files.id_proof
+    ) {
       setMsg("Please upload all required documents.");
       return;
     }
@@ -75,10 +80,10 @@ export default function VerifyNgo() {
         if (files[key]) formData.append(key, files[key]);
       }
 
-      const res = await fetch("http://localhost:5000/api/users/verifications", {
+      const res = await fetch("http://20.55.80.17/api/users/verifications", {
         method: "POST",
         headers: { Authorization: `Bearer ${user.token}` },
-        body: formData
+        body: formData,
       });
 
       if (res.ok) {
@@ -99,7 +104,10 @@ export default function VerifyNgo() {
       <main className="verify-main">
         <div className="verify-title">
           <h1>NGO Verification</h1>
-          <p>Upload required documents to verify NGO status and unlock campaign creation.</p>
+          <p>
+            Upload required documents to verify NGO status and unlock campaign
+            creation.
+          </p>
         </div>
 
         {loading ? (
@@ -107,12 +115,17 @@ export default function VerifyNgo() {
         ) : status === "PENDING" ? (
           <div className="status-card pending">
             <h2>Verification in Progress</h2>
-            <p>Your application is under review. Please wait for admin approval.</p>
+            <p>
+              Your application is under review. Please wait for admin approval.
+            </p>
           </div>
         ) : status === "APPROVED" ? (
           <div className="status-card approved">
             <h2>Verified Successfully</h2>
-            <p>Your NGO is now verified. You can create campaigns and receive donations.</p>
+            <p>
+              Your NGO is now verified. You can create campaigns and receive
+              donations.
+            </p>
           </div>
         ) : (
           <>
@@ -126,22 +139,44 @@ export default function VerifyNgo() {
               <div className="document-grid">
                 <div className="document-card">
                   <h3>NGO Registration Certificate</h3>
-                  <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "ngo_registration_doc")} />
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) =>
+                      handleFileChange(e, "ngo_registration_doc")
+                    }
+                  />
                 </div>
                 <div className="document-card">
                   <h3>PAN Card</h3>
-                  <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "pan_card")} />
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => handleFileChange(e, "pan_card")}
+                  />
                 </div>
                 <div className="document-card">
                   <h3>Bank Proof</h3>
-                  <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "bank_proof")} />
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => handleFileChange(e, "bank_proof")}
+                  />
                 </div>
                 <div className="document-card">
                   <h3>ID Proof</h3>
-                  <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "id_proof")} />
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => handleFileChange(e, "id_proof")}
+                  />
                 </div>
               </div>
-              <button type="submit" className="submit-button" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Submitting..." : "Submit for Verification"}
               </button>
               {msg && <p className="form-message">{msg}</p>}

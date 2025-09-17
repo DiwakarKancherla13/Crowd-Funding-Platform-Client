@@ -11,7 +11,9 @@ export default function HeroSection() {
     async function fetchCampaigns() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/api/campaigns/campaign/campaigns");
+        const res = await fetch(
+          "http://20.55.80.17/api/campaigns/campaign/campaigns"
+        );
         const data = await res.json();
         setCampaigns(data || []);
       } catch (err) {
@@ -34,8 +36,7 @@ export default function HeroSection() {
           <div className="text-content">
             <p className="small-text">For Verified & Trusted NGOs</p>
             <h1 className="main-text">
-              Empower <br />{" "}
-              <span className="highlight">Change Makers</span>
+              Empower <br /> <span className="highlight">Change Makers</span>
             </h1>
             <p className="description">
               Join us in transforming lives through impactful campaigns and
@@ -85,10 +86,17 @@ export default function HeroSection() {
                   <span>{percent}% funded</span>
                 </div>
                 <div className="campaign-date">
-                  <span>Start: {new Date(campaign.start_date).toLocaleDateString()}</span>
-                  <span>End: {new Date(campaign.end_date).toLocaleDateString()}</span>
+                  <span>
+                    Start: {new Date(campaign.start_date).toLocaleDateString()}
+                  </span>
+                  <span>
+                    End: {new Date(campaign.end_date).toLocaleDateString()}
+                  </span>
                 </div>
-                <Link to={`/campaigns/${campaign.campaign_id}`} className="btn btn-campaign">
+                <Link
+                  to={`/campaigns/${campaign.campaign_id}`}
+                  className="btn btn-campaign"
+                >
                   View Details
                 </Link>
               </div>

@@ -31,7 +31,7 @@ export default function Signup() {
       };
 
       const res = await axios.post(
-        "http://localhost:5000/api/users/auth/register",
+        "http://20.55.80.17/api/users/auth/register",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -54,7 +54,9 @@ export default function Signup() {
     <div className="auth-wrapper">
       <form className="card form auth-form animate-fade-in" onSubmit={onSubmit}>
         <h2>Join CrowdFund</h2>
-        <p className="auth-subtitle">Create your account to start supporting causes</p>
+        <p className="auth-subtitle">
+          Create your account to start supporting causes
+        </p>
 
         <label>
           Full Name
@@ -91,7 +93,7 @@ export default function Signup() {
 
         <label>
           I am a
-          <select 
+          <select
             value={form.roleId}
             onChange={(e) => update("roleId", e.target.value)}
           >

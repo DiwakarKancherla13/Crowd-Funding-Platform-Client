@@ -22,7 +22,7 @@ export default function DonationForm() {
       (async () => {
         try {
           const { data } = await axios.get(
-            `http://localhost:5000/api/campaigns/campaign/campaigns/${id}`
+            `http://20.55.80.17/api/campaigns/campaign/campaigns/${id}`
           );
           setCampaign({
             campaignId: data.campaign_id,
@@ -50,7 +50,7 @@ export default function DonationForm() {
 
     try {
       const orderRes = await axios.post(
-        "http://localhost:5000/api/donors/donation/order",
+        "http://20.55.80.17/api/donors/donation/order",
         {
           amount: Number(amount),
           currency: "INR",
@@ -76,7 +76,7 @@ export default function DonationForm() {
         handler: async function (response) {
           try {
             await axios.post(
-              "http://localhost:5000/api/donors/donation/verify",
+              "http://20.55.80.17/api/donors/donation/verify",
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,

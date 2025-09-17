@@ -17,7 +17,7 @@ function NgoDashboard() {
     const fetchNgoData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/campaigns/campaign/campaigns/email/${user.email}`,
+          `http://20.55.80.17/api/campaigns/campaign/campaigns/email/${user.email}`,
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
         const data = await res.json();

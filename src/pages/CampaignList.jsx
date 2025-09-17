@@ -18,7 +18,7 @@ export default function DonorCampaignList() {
     (async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/campaigns/campaign/campaigns"
+          "http://20.55.80.17/api/campaigns/campaign/campaigns"
         );
 
         if (Array.isArray(data)) {
@@ -223,7 +223,9 @@ export default function DonorCampaignList() {
                     <span>
                       Start: {new Date(c.start_date).toLocaleDateString()}
                     </span>
-                    <span>End: {new Date(c.end_date).toLocaleDateString()}</span>
+                    <span>
+                      End: {new Date(c.end_date).toLocaleDateString()}
+                    </span>
                   </div>
 
                   {/* Display location */}
@@ -261,8 +263,11 @@ export default function DonorCampaignList() {
                     )}
                   </div>
 
-                  <div className={`campaign-status campaign-status-${c.status}`}>
-                    Status: {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
+                  <div
+                    className={`campaign-status campaign-status-${c.status}`}
+                  >
+                    Status:{" "}
+                    {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
                   </div>
                 </div>
               </article>
@@ -335,11 +340,17 @@ export default function DonorCampaignList() {
                 <div className="detail-row">
                   <div className="detail-group">
                     <h4>Start</h4>
-                    <p>{new Date(selectedCampaign.start_date).toLocaleDateString()}</p>
+                    <p>
+                      {new Date(
+                        selectedCampaign.start_date
+                      ).toLocaleDateString()}
+                    </p>
                   </div>
                   <div className="detail-group">
                     <h4>End</h4>
-                    <p>{new Date(selectedCampaign.end_date).toLocaleDateString()}</p>
+                    <p>
+                      {new Date(selectedCampaign.end_date).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
 

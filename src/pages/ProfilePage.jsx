@@ -29,7 +29,7 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/profile", {
+      const res = await axios.get("http://20.55.80.17/api/users/profile", {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       if (res.data.success) {
@@ -80,9 +80,11 @@ export default function ProfilePage() {
 
   const validate = () => {
     let tempErrors = {};
-    if (!form.first_name.trim()) tempErrors.first_name = "First name is required.";
+    if (!form.first_name.trim())
+      tempErrors.first_name = "First name is required.";
     if (!form.last_name.trim()) tempErrors.last_name = "Last name is required.";
-    if (!form.mobile_number.trim()) tempErrors.mobile_number = "Mobile number is required.";
+    if (!form.mobile_number.trim())
+      tempErrors.mobile_number = "Mobile number is required.";
     return tempErrors;
   };
 
@@ -104,12 +106,12 @@ export default function ProfilePage() {
       }
 
       if (profile) {
-        await axios.put("http://localhost:5000/api/users/profile", formData, {
+        await axios.put("http://20.55.80.17/api/users/profile", formData, {
           headers,
         });
         setMsg("Profile updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/users/profile", formData, {
+        await axios.post("http://20.55.80.17/api/users/profile", formData, {
           headers,
         });
         setMsg("Profile created successfully!");
@@ -161,7 +163,9 @@ export default function ProfilePage() {
               value={form.first_name}
               onChange={(e) => handleChange("first_name", e.target.value)}
             />
-            {errors.first_name && <small style={{ color: "red" }}>{errors.first_name}</small>}
+            {errors.first_name && (
+              <small style={{ color: "red" }}>{errors.first_name}</small>
+            )}
           </label>
           <label>
             Last Name
@@ -170,7 +174,9 @@ export default function ProfilePage() {
               value={form.last_name}
               onChange={(e) => handleChange("last_name", e.target.value)}
             />
-            {errors.last_name && <small style={{ color: "red" }}>{errors.last_name}</small>}
+            {errors.last_name && (
+              <small style={{ color: "red" }}>{errors.last_name}</small>
+            )}
           </label>
           <label>
             Mobile
@@ -179,7 +185,9 @@ export default function ProfilePage() {
               value={form.mobile_number}
               onChange={(e) => handleChange("mobile_number", e.target.value)}
             />
-            {errors.mobile_number && <small style={{ color: "red" }}>{errors.mobile_number}</small>}
+            {errors.mobile_number && (
+              <small style={{ color: "red" }}>{errors.mobile_number}</small>
+            )}
           </label>
           <label>
             Bio
@@ -205,7 +213,11 @@ export default function ProfilePage() {
           </label>
           {imagePreview && (
             <div style={{ margin: "10px 0" }}>
-              <img src={imagePreview} alt="Preview" style={{ width: "100px", borderRadius: "50%" }} />
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{ width: "100px", borderRadius: "50%" }}
+              />
             </div>
           )}
 

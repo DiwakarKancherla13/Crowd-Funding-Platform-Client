@@ -19,16 +19,16 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/auth/login",
+        "http://20.55.80.17/api/users/auth/login",
         { email: form.email, password: form.password },
         { headers: { "Content-Type": "application/json" } }
       );
 
       if (res.data.success) {
-        const { token, id, email, role,name, is_verified } = res.data;
+        const { token, id, email, role, name, is_verified } = res.data;
 
         // Use AuthContext login function with proper user object structure
-        login({ token, id, email, role,name, is_verified });
+        login({ token, id, email, role, name, is_verified });
 
         // Navigate based on role (1 = Admin, 2 = NGO, 3 = Donor)
         console.log("Navigating to role:", role);

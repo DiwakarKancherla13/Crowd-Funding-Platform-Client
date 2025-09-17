@@ -15,7 +15,7 @@ export default function MyDonations() {
         if (user?.email) {
           // fetch user donations
           const res = await fetch(
-            `http://localhost:5000/api/donors/donation/email/${user.email}`,
+            `http://20.55.80.17/api/donors/donation/email/${user.email}`,
             { headers: { Authorization: `Bearer ${user.token}` } }
           );
           const data = await res.json();
@@ -26,7 +26,7 @@ export default function MyDonations() {
               data.map(async (d) => {
                 try {
                   const campaignRes = await fetch(
-                    `http://localhost:5000/api/campaigns/campaign/campaigns/${d.campaign_id}`
+                    `http://20.55.80.17/api/campaigns/campaign/campaigns/${d.campaign_id}`
                   );
                   const campaign = await campaignRes.json();
 
