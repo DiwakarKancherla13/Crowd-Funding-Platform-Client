@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatWidget.css";
- 
+
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [botTyping, setBotTyping] = useState(false);
- 
+
   const chatBoxRef = useRef(null);
   const widgetRef = useRef(null);
- 
+
   // Auto-scroll
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [chat, botTyping]);
- 
+
   // 🎤 Voice input
   const startListening = () => {
     const SpeechRecognition =
@@ -33,21 +33,21 @@ function ChatWidget() {
     };
     recognition.start();
   };
- 
+
   // 🔊 Bot voice
   const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
   };
- 
+
   // Send message
   const sendMessage = () => {
     if (!message.trim()) return;
     setChat((prev) => [...prev, { sender: "You", text: message }]);
     setMessage("");
     setBotTyping(true);
- 
-    fetch("http://localhost:8000/chat", {
+
+    fetch("http://135.232.98.118/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
@@ -67,16 +67,16 @@ function ChatWidget() {
       .catch((err) => console.error("Error:", err))
       .finally(() => setBotTyping(false));
   };
- 
+
   // ✅ Dragging
   useEffect(() => {
     const widget = widgetRef.current;
     if (!widget) return;
- 
+
     let offsetX = 0;
     let offsetY = 0;
     let isDragging = false;
- 
+
     const onMouseDown = (e) => {
       if (e.target.closest(".chat-header")) {
         isDragging = true;
@@ -86,25 +86,25 @@ function ChatWidget() {
         document.addEventListener("mouseup", onMouseUp);
       }
     };
- 
+
     const onMouseMove = (e) => {
       if (isDragging) {
         widget.style.left = `${e.clientX - offsetX}px`;
         widget.style.top = `${e.clientY - offsetY}px`;
       }
     };
- 
+
     const onMouseUp = () => {
       isDragging = false;
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
     };
- 
+
     widget.addEventListener("mousedown", onMouseDown);
- 
+
     return () => widget.removeEventListener("mousedown", onMouseDown);
   }, []);
- 
+
   return (
     <div>
       {!isOpen && (
@@ -112,7 +112,7 @@ function ChatWidget() {
           💬
         </button>
       )}
- 
+
       {isOpen && (
         <div
           className={`chat-widget open`} // ✅ add animation class
@@ -124,7 +124,7 @@ function ChatWidget() {
             <span>Crowdfund Assistant</span>
             <button onClick={() => setIsOpen(false)}>✖</button>
           </div>
- 
+
           <div className="chat-box" ref={chatBoxRef}>
             {chat.map((c, i) => (
               <div
@@ -134,7 +134,7 @@ function ChatWidget() {
                 <b>{c.sender}:</b> {c.text}
               </div>
             ))}
- 
+
             {botTyping && (
               <div className="bot-typing">
                 <span className="dot"></span>
@@ -143,7 +143,7 @@ function ChatWidget() {
               </div>
             )}
           </div>
- 
+
           <div className="chat-input">
             <input
               type="text"
@@ -164,5 +164,5 @@ function ChatWidget() {
     </div>
   );
 }
- 
+
 export default ChatWidget;
