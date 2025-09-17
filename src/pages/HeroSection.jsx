@@ -11,7 +11,9 @@ export default function HeroSection() {
     async function fetchCampaigns() {
       setLoading(true);
       try {
-        const res = await fetch("api/campaigns/campaign/campaigns");
+        const res = await fetch(
+          "http://20.55.80.17/api/campaigns/campaign/campaigns"
+        );
         const data = await res.json();
         setCampaigns(data || []);
       } catch (err) {
